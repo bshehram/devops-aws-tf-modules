@@ -5,7 +5,6 @@ A Terraform module collection that creates VPCs and related network resources in
 ```
 module "network" {
   source  = "../devops-aws-tf-modules"
-  version = "1.0.0"
 
   optional_prefix       = var.optional_prefix # can be left out if not needed
   availability_zones    = var.availability_zones
