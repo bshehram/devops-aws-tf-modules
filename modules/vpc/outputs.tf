@@ -13,4 +13,3 @@ output "security_group_id" {
 output "igw" {
   value = aws_internet_gateway.main.id
 }
-

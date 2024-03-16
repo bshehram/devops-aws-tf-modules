@@ -1,23 +1,15 @@
-terraform {
-  required_providers {
-    aws = {
-      version = "~> 3.31.0"
-    }
-  }
-}
-
 module "vpc" {
-  source = "../vpc"
+  source = "./modules/vpc"
 
-  cidr = var.vpc_cidr
-  env  = var.env
+  cidr            = var.vpc_cidr
+  optional_prefix = var.optional_prefix
 }
 
 module "public_subnets" {
-  source = "../subnet"
+  source = "./modules/subnet"
 
-  name                    = "${var.env}-public"
-  env                     = var.env
+  name                    = "public"
+  optional_prefix         = var.optional_prefix
   vpc_id                  = module.vpc.id
   cidrs                   = var.public_subnet_cidrs
   availability_zones      = var.availability_zones
@@ -25,10 +17,10 @@ module "public_subnets" {
 }
 
 module "private_subnets" {
-  source = "../subnet"
+  source = "./modules/subnet"
 
-  name                    = "${var.env}-private"
-  env                     = var.env
+  name                    = "private"
+  optional_prefix         = var.optional_prefix
   vpc_id                  = module.vpc.id
   cidrs                   = var.private_subnet_cidrs
   availability_zones      = var.availability_zones
@@ -36,10 +28,10 @@ module "private_subnets" {
 }
 
 module "internal_subnets" {
-  source = "../subnet"
+  source = "./modules/subnet"
 
-  name                    = "${var.env}-internal"
-  env                     = var.env
+  name                    = "internal"
+  optional_prefix         = var.optional_prefix
   vpc_id                  = module.vpc.id
   cidrs                   = var.internal_subnet_cidrs
   availability_zones      = var.availability_zones
@@ -47,9 +39,9 @@ module "internal_subnets" {
 }
 
 module "nat" {
-  source = "../nat_gateway"
+  source = "./modules/nat_gateway"
 
-  env                = var.env
+  optional_prefix    = var.optional_prefix
   subnet_ids         = flatten([module.public_subnets.ids])
   subnet_count       = length(var.public_subnet_cidrs)
   availability_zones = var.availability_zones
@@ -74,8 +66,4 @@ resource "aws_route" "internal_nat_route" {
   route_table_id         = element(flatten([module.internal_subnets.route_table_ids]), count.index)
   nat_gateway_id         = element(flatten([module.nat.ids]), count.index)
   destination_cidr_block = var.destination_cidr_block
-}
-
-resource "null_resource" "dummy_dependency" {
-  depends_on = [module.nat]
 }

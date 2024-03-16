@@ -9,4 +9,3 @@ output "route_table_ids" {
     aws_route_table.subnet.*.id,
   ]
 }
-

@@ -1,9 +1,6 @@
 variable "vpc_cidr" {
 }
 
-variable "env" {
-}
-
 variable "destination_cidr_block" {
   default = "0.0.0.0/0"
 }
@@ -24,5 +21,7 @@ variable "availability_zones" {
   type = list(string)
 }
 
-variable "depends_id" {
+variable "optional_prefix" {
+  default = ""
+  type    = string
 }

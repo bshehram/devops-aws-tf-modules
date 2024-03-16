@@ -1,5 +1,0 @@
-variable "cidr" {
-}
-
-variable "env" {
-}

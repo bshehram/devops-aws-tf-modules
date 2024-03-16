@@ -1,9 +1,9 @@
 resource "aws_vpc_endpoint" "s3" {
   vpc_id       = module.vpc.id
-  service_name = "com.amazonaws.us-east-1.s3"
+  service_name = "com.amazonaws.us-west-2.s3"
 
   tags = {
-    Name = "${var.env}-s3"
+    Name = "${var.optional_prefix}endpoint-s3"
   }
 }
 
@@ -27,10 +27,10 @@ resource "aws_vpc_endpoint_route_table_association" "s3-int" {
 
 resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id       = module.vpc.id
-  service_name = "com.amazonaws.us-east-1.dynamodb"
+  service_name = "com.amazonaws.us-west-2.dynamodb"
 
   tags = {
-    Name = "${var.env}-dynamodb"
+    Name = "${var.optional_prefix}endpoint-dynamodb"
   }
 }
 
