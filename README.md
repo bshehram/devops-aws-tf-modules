@@ -7,7 +7,8 @@ module "network" {
   source = "github.com/bshehram/devops-aws-tf-modules"
 
   optional_prefix       = var.optional_prefix
-  availability_zones    = var.availability_zones
+  endpoint_region       = var.endpoint_region # default is us-west-2
+  availability_zones    = var.availability_zones # ensure they are in endpoint_region
   vpc_cidr              = var.networks["vpc"]
   public_subnet_cidrs   = split(",", var.networks["public"])
   private_subnet_cidrs  = split(",", var.networks["private"])
@@ -17,6 +18,7 @@ module "network" {
 
 ## Requirements
 ```
+endpoint_region    = "us-west-2"
 availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c", "us-west-2d"]
 
 networks = {

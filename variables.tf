@@ -1,3 +1,7 @@
+variable "endpoint_region" {
+  default = "us-west-2"
+}
+
 variable "vpc_cidr" {
 }
 
